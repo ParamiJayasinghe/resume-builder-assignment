@@ -13,13 +13,13 @@ public function __construct(){
     add_action( 'init', array( $this, 'register_post_type'));
 }
 
-public function register_post_type(){
-    $args = array(
-        'label' => __( 'Resumes', 'resume-builder' ),
-        'public' => false,
-        'show_ui' =>true,
-        'supports' => array( 'title' ),
-    );
-    register_post_type( 'resume', $args );
-}
+    public function register_post_type(){
+        $args = array(
+            'label' => __( 'Resumes', 'resume-builder' ),
+            'public' => true,
+            'show_ui' => true,
+            'supports' => array( 'title', 'editor' ),
+        );
+        register_post_type( 'resume', $args );
+    }
 }
