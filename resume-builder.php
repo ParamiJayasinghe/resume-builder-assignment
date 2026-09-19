@@ -6,17 +6,18 @@
  * Author: Parami Jayasinghe
  */
 
-if( ! defined( 'ABSPATH' )){
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define ( 'RESUME_BUILDER_PATH', plugin_dir_path( __FILE__));
-define ( 'RESUME_BUILDER_URL', plugin_dir_url( __FILE__));
+define( 'RESUME_BUILDER_PATH', plugin_dir_path( __FILE__ ) );
+define( 'RESUME_BUILDER_URL', plugin_dir_url( __FILE__ ) );
 
-require_once RESUME_BUILDER_PATH. 'includes/class-cpt-registry.php';
+require_once RESUME_BUILDER_PATH . 'includes/class-cpt-registry.php';
+require_once RESUME_BUILDER_PATH . 'includes/class-shortcode.php'; 
 
-function resume_builder_init(){
+function resume_builder_init() {
     new Resume_Builder_CPT();
+    new Resume_Builder_Shortcode(); 
 }
-
-add_action( 'plugins_loaded', 'resume_builder_init');
+add_action( 'plugins_loaded', 'resume_builder_init' );
