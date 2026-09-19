@@ -1,4 +1,4 @@
-import { createRoot, useState } from "@wordpress/element";
+import { createRoot, useState, useEffect } from "@wordpress/element";
 
 const App = () => {
   const [resumeData, setResumeData] = useState({
@@ -11,6 +11,54 @@ const App = () => {
   });
 
   const [newSectionTitle, setNewSectionTitle] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (window.resumeBuilderData && window.resumeBuilderData.postId) {
+      fetch(
+        `${window.resumeBuilderData.root_url}resume-builder/v1/resume/${window.resumeBuilderData.postId}`,
+        {
+          headers: {
+            "X-WP-Nonce": window.resumeBuilderData.nonce,
+          },
+        },
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.sections) {
+            setResumeData(data);
+          }
+        });
+    }
+  }, []);
+
+  const handleSave = () => {
+    if (!window.resumeBuilderData) return;
+    setIsSaving(true);
+
+    fetch(
+      `${window.resumeBuilderData.root_url}resume-builder/v1/resume/${window.resumeBuilderData.postId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-WP-Nonce": window.resumeBuilderData.nonce,
+        },
+        body: JSON.stringify(resumeData),
+      },
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        setIsSaving(false);
+        if (response.success) {
+          alert("Resume saved successfully!");
+        }
+      })
+      .catch(() => {
+        setIsSaving(false);
+        alert("Error saving resume.");
+      });
+  };
 
   const handleAddSection = () => {
     if (!newSectionTitle.trim()) return;

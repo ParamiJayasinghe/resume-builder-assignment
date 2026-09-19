@@ -24,6 +24,13 @@ class Resume_Builder_Shortcode {
                 $assets['version'],
                 true
             );
+
+            // Pass the REST API URL, Security Nonce, and current Post ID to React
+            wp_localize_script( 'resume-builder-react', 'resumeBuilderData', array(
+                'root_url' => esc_url_raw( rest_url() ),
+                'nonce'    => wp_create_nonce( 'wp_rest' ),
+                'postId'   => get_the_ID(),
+            ));
         }
 
         return '<div id="resume-builder-root">Loading Resume Builder...</div>';
