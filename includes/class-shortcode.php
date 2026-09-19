@@ -13,6 +13,19 @@ class Resume_Builder_Shortcode {
     }
 
     public function render_shortcode() {
+        $asset_file = RESUME_BUILDER_PATH . 'build/index.asset.php';
+        
+        if ( file_exists( $asset_file ) ) {
+            $assets = require $asset_file;
+            wp_enqueue_script(
+                'resume-builder-react',
+                RESUME_BUILDER_URL . 'build/index.js',
+                $assets['dependencies'],
+                $assets['version'],
+                true
+            );
+        }
+
         return '<div id="resume-builder-root">Loading Resume Builder...</div>';
     }
 }
